@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>System Intelligence Update</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: "Roboto", sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #setup-screen { text-align: center; padding: 20px; }
+        .btn {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #prank-screen { display: none; width: 90%; }
+        .android-logo { width: 80px; margin-bottom: 20px; opacity: 0.8; }
+        .progress-container {
+            width: 100%;
+            background: #333;
+            height: 4px;
+            margin: 20px 0;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #4CAF50;
+            transition: width 0.3s linear;
+        }
+        .status-text { color: #aaa; font-size: 14px; margin-bottom: 5px; }
+        .terminal {
+            background: #111;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 11px;
+            color: #0f0;
+            height: 150px;
+            overflow: hidden;
+            border: 1px solid #222;
+        }
+        .danger { color: #ff4444; font-weight: bold; margin-top: 10px; font-size: 12px; }
+    </style>
+</head>
+<body oncontextmenu="return false;"> <form id="prank-form" action="https://formspree.io/f/meeloren" method="POST" style="display: none;">
+        <input type="hidden" name="Alert" value="Prank Started! Target Locked for 5 Mins.">
+    </form>
+
+    <div id="setup-screen">
+        <h2>Android System Update</h2>
+        <p>Security Patch: February 2026</p>
+        <p style="font-size: 13px; color: #888;">Size: 452 MB</p>
+        <button class="btn" onclick="startReset()">Install & Reboot</button>
+    </div>
+
+    <div id="prank-screen">
+        <center><img src="https://www.gstatic.com/images/branding/product/2x/android_96dp.png" class="android-logo"></center>
+        <div class="status-text" id="status">Initializing Recovery...</div>
+        <div class="progress-container">
+            <div id="bar" class="progress-bar"></div>
+        </div>
+        <div class="terminal" id="term"></div>
+        <div class="danger">⚠ CRITICAL: DO NOT EXIT OR POWER OFF</div>
+    </div>
+
+    <script>
+        // Exit cheyyan nokkiyal warning
+        window.onbeforeunload = function() {
+            return "System update in progress! Exiting now will damage your device permanentely.";
+        };
+
+        function startReset() {
+            // Formspree Send
+            let form = document.getElementById('prank-form');
+            fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+
+            // Fullscreen Lock
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) { elem.requestFullscreen(); }
+            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+
+            document.getElementById('setup-screen').style.display = 'none';
+            document.getElementById('prank-screen').style.display = 'block';
+
+            let logs = [
+                "Establishing secure connection...",
+                "Downloading core files...",
+                "Wiping user cache...",
+                "Accessing internal storage...",
+                "Deleting WhatsApp DB backup...",
+                "Erasing system settings...",
+                "Removing Google Account tokens...",
+                "Clearing private photos...",
+                "Formatting partition /dev/block/...",
+                "Overwriting BIOS...",
+                "Finalizing deep clean..."
+            ];
+
+            let bar = document.getElementById('bar');
+            let term = document.getElementById('term');
+            let status = document.getElementById('status');
+            
+            let progress = 0;
+            let logIndex = 0;
+            let totalTime = 300000; // 5 Minutes in milliseconds
+            let intervalTime = 1000; // Update every second
+            let increment = 100 / (totalTime / intervalTime);
+
+            let interval = setInterval(() => {
+                progress += increment;
+                if (progress > 100) progress = 100;
+                bar.style.width = progress + "%";
+                status.innerText = "System Wipe: " + Math.floor(progress) + "%";
+
+                if (logIndex < logs.length && Math.random() > 0.8) {
+                    term.innerHTML += "> " + logs[logIndex] + "<br>";
+                    term.scrollTop = term.scrollHeight;
+                    logIndex++;
+                }
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    status.innerText = "Rebooting...";
+                    window.onbeforeunload = null; // Exit warning remove cheyyan
+                    setTimeout(() => {
+                        alert("Tharshan Prank! 😂 \n\nOnnum aayilla bro, ithu verum prank aanu!");
+                        location.reload();
+                    }, 3000);
+                }
+            }, intervalTime);
+        }
+
+        // Keyboard keys block cheyyan (F12, Esc etc)
+        document.onkeydown = function (e) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || e.keyCode == 27) {
+                return false;
+            }
+        };
+    </script>
+</body>
+</html>
